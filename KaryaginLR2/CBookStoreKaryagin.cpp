@@ -12,16 +12,14 @@ CBookStoreKaryagin::CBookStoreKaryagin()
 
 void CBookStoreKaryagin::enterBook()
 {
-	CBookKaryagin* book = new CBookKaryagin;
-	book->newBook();
+	auto book = make_shared<CBookKaryagin>();
 	listOfBooks.push_back(book);
 }
 
 
 CBookStoreKaryagin::~CBookStoreKaryagin()
 {
-	for (CBookKaryagin* book : listOfBooks)
-		delete book;
+	clearBooksList();
 }
 
 void CBookStoreKaryagin::outputBooksListOnDisplay()
@@ -35,8 +33,7 @@ void CBookStoreKaryagin::outputBooksListOnDisplay()
 
 void CBookStoreKaryagin::enterBookFiction()
 {
-	CBookFictionKaryagin* book = new CBookFictionKaryagin;
-	book->newBook();
+	auto book = make_shared<CBookKaryagin>();
 	listOfBooks.push_back(book);
 }
 
@@ -54,7 +51,8 @@ void CBookStoreKaryagin::readBooksListFromFile()
 	{
 		CBookKaryagin* o;
 		ar >> o;
-		listOfBooks.push_back(o);
+		shared_ptr<CBookKaryagin> lp(o);
+		listOfBooks.push_back(lp);
 	}
 }
 
@@ -67,17 +65,15 @@ void CBookStoreKaryagin::writeBooksListInFile()
 	CFile f(CString(fileName.c_str()), CFile::modeCreate | CFile::modeWrite);
 	CArchive ar(&f, CArchive::store);
 	ar << listOfBooks.size();
-	for (auto o : listOfBooks)
+	for (auto& pObj : listOfBooks)
 	{
-		ar << o;
-		delete o;
+		CBookKaryagin* p = pObj.get();
+		ar << p;
 	}
 	listOfBooks.clear();
 }
 
 void CBookStoreKaryagin::clearBooksList()
 {
-	for (int i = 0; i < listOfBooks.size(); i++)
-		delete listOfBooks[i];
 	listOfBooks.clear();
 }

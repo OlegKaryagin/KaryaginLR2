@@ -4,7 +4,7 @@
 
 class CBookStoreKaryagin
 {
-	vector<CBookKaryagin*> listOfBooks;
+	vector<shared_ptr<CBookKaryagin>> listOfBooks;
 public:
 	CBookStoreKaryagin();
 	void enterBook();
