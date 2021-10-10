@@ -7,6 +7,7 @@ class CBookFictionKaryagin :
     public CBookKaryagin
 {
     string genre;
+    int pageCount;
 
 public:
     DECLARE_SERIAL(CBookFictionKaryagin);
